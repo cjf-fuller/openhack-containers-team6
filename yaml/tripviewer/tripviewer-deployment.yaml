@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer
+  namespace: fe
+  labels:
+    app: tripviewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripviewer
+    spec:
+      containers:
+      - name: tripviewer
+        env:
+        - name: USERPROFILE_API_ENDPOINT
+          value: http://userprofile.api.svc.cluster.local:8082
+        - name: TRIPS_API_ENDPOINT
+          value: http://trips.api.svc.cluster.local:8083
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        image: registryyme7268.azurecr.io/tripinsights/tripviewer:1.0
+        ports: 
+        - containerPort: 80
+        readinessProbe: # is the container ready to receive traffic?
+          httpGet:
+            port: 80
+            path: /
+        livenessProbe: # is the container healthy?
+          httpGet:
+            port: 80
+            path: /
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer
+  namespace: fe
+spec:
+  selector:
+    app: tripviewer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
