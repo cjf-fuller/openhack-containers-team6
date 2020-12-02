@@ -4,6 +4,7 @@ metadata:
   name: ujava
   namespace: api
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: ujava
