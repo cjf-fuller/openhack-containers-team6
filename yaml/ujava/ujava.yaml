@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ujava
+  namespace: api
+spec:
+  selector:
+    matchLabels:
+      app: ujava
+  template:
+    metadata:
+      labels:
+        app: ujava # the label for the pods and the deployments
+    spec:
+      containers:
+      - name: ujava
+        image:  registryyme7268.azurecr.io/tripinsights/userjava:1.0 # IMPORTANT: update with your own repository
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80 # the application listens to this port
+        env:
+        - name: SQL_PASSWORD
+          value: password
+        - name: SQL_SERVER
+          value: dbname.database.windows.net
+        - name: SQL_USER
+          value: username
+        - name: SQL_DBNAME
+          value: mydrivingDB
+        readinessProbe: # is the container ready to receive traffic?
+          httpGet:
+            port: 80
+            path: /api/user-java/healthcheck
+        livenessProbe: # is the container healthy?
+          httpGet:
+            port: 80
+            path: /api/user-java/healthcheck
