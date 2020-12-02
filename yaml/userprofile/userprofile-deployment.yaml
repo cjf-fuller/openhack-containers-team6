@@ -19,11 +19,11 @@ spec:
       - name: userprofile
         env:
         - name: SQL_PASSWORD
-          value: sK6cn8Ju5
+          value: <replaceme>
         - name: SQL_SERVER
-          value: sqlserveryme7268.database.windows.net
+          value: <replaceme>
         - name: SQL_USER
-          value: sqladminyMe7268
+          value: <replaceme>
         - name: ASPNETCORE_ENVIRONMENT
           value: Production
         - name: SQL_DBNAME
