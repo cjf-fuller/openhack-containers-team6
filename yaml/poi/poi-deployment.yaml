@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi
+  namespace: api
+  labels:
+    app: poi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poi
+  template:
+    metadata:
+      labels:
+        app: poi
+    spec:
+      containers:
+      - name: poi
+        env:
+        - name: SQL_PASSWORD
+          value: <CHANGE-ME>
+        - name: SQL_SERVER
+          value: <CHANGE-ME>
+        - name: SQL_USER
+          value: <CHANGE-ME>
+        - name: SQL_DBNAME
+          value: <CHANGE-ME>
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        image: registryyme7268.azurecr.io/tripinsights/poi:1.0
+        ports: 
+        - containerPort: 80
+        readinessProbe: 
+          httpGet:
+            port: 80
+            path: /api/poi/healthcheck
+        livenessProbe: 
+          httpGet:
+            port: 80
+            path: /api/poi/healthcheck
