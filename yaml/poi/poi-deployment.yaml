@@ -13,6 +13,7 @@ spec:
   template:
     metadata:
       labels:
+        aadpodidbinding: azure-pod-identity-binding-selector
         app: poi
     spec:
       containers:
